@@ -2,8 +2,18 @@ import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, Validators, FormControl } from "@angular/forms";
 import { forkJoin } from "rxjs";
+import { ApiService } from "src/app/services/api-service.service";
 
-type QuestionAnswerType = "boolean" | "group" | "string" | "date";
+type QuestionAnswerType =
+  | "boolean"
+  | "group"
+  | "string"
+  | "date"
+  | "dateTime"
+  | "time"
+  | "uri"
+  | "integer"
+  | "decimal";
 
 interface Question {
   linkId: string;
@@ -35,32 +45,29 @@ export class QuestionnaireComponent implements OnInit {
   questionExts: QuestionExt[];
   response: {};
 
-  private _questionnaire_URL = "assets/questionnaire.json";
-  private _questionnaire_extension_URL = "assets/questionnaire-extension.json";
+  constructor(private apiService: ApiService) {
+    this.apiService
+      .getQuestions()
+      .subscribe(({ questionnaire, questionnaire_extension }) => {
+        this.questions = (questionnaire as any).item;
+        this.questionExts = (questionnaire_extension as any).item;
 
-  constructor(private http: HttpClient) {
-    forkJoin({
-      questionnaire: this.http.get(this._questionnaire_URL),
-      questionnaire_extension: this.http.get(this._questionnaire_extension_URL),
-    }).subscribe(({ questionnaire, questionnaire_extension }) => {
-      this.questions = (questionnaire as any).item;
-      this.questionExts = (questionnaire_extension as any).item;
-
-      this.questions.forEach((q) => {
-        this.setQuestionExt(q);
-      });
-
-      const controls = {};
-      this.questionExts.forEach((res) => {
-        const validationsArray = [];
-        res.validations.forEach((val) => {
-          validationsArray.push(Validators[val.name]);
+        this.questions.forEach((q) => {
+          this.setQuestionExt(q);
         });
-        controls[res.linkId] = new FormControl("", validationsArray);
+
+        const controls = {};
+        this.questionExts.forEach((res) => {
+          const validationsArray = [];
+          res.validations.forEach((val) => {
+            validationsArray.push(Validators[val.name]);
+          });
+          controls[res.linkId] = new FormControl("", validationsArray);
+        });
+        this.dynamicForm = new FormGroup(controls);
       });
-      this.dynamicForm = new FormGroup(controls);
-    });
   }
+
   ngOnInit(): void {}
 
   onSubmit() {
@@ -107,6 +114,25 @@ export class QuestionnaireComponent implements OnInit {
     };
   }
 
+  getInputType(type: QuestionAnswerType) {
+    switch (type) {
+      case "date":
+        return "date";
+      case "dateTime":
+        return "datetime - local";
+      case "time":
+        return "time";
+      case "uri":
+        return "url";
+      case "integer":
+        return "number";
+      case "date":
+        return "date";
+      default:
+        "text";
+    }
+  }
+
   private generateResponseItem(questionItems: Question[]) {
     const items = [];
     questionItems.forEach((q) => {
@@ -128,12 +154,26 @@ export class QuestionnaireComponent implements OnInit {
   private getItemAnswer(q: Question) {
     const answer = this.dynamicForm.controls[q.linkId].value;
     switch (q.type) {
-      case "string":
-        return [{ valueString: answer }];
       case "date":
         return [{ valueDate: answer }];
+      case "dateTime":
+        return [{ valueDateTime: answer }];
+      case "time":
+        return [{ valueTime: answer }];
       case "boolean":
         return [{ valueBoolean: answer }];
+      case "uri":
+        return [{ valueUri: answer }];
+      case "decimal":
+        return [{ valueDecimal: answer }];
+      case "integer":
+        return [{ valueInteger: answer }];
+      case "boolean":
+        return [{ valueBoolean: answer }];
+      case "uri":
+        return [{ valueUri: answer }];
+      default:
+        return [{ valueString: answer }];
     }
   }
 

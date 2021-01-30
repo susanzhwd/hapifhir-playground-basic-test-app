@@ -1,4 +1,4 @@
-<div *ngIf="dynamicForm">
+<div *ngIf="dynamicForm" class="questions">
   <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" novalidate>
     <ng-container
       *ngFor="let question of questions"
@@ -8,13 +8,14 @@
     </ng-container>
     <input type="submit" [disabled]="!dynamicForm.valid" />
     <ng-template let-question="question" #questionContent>
-      <div>
-        <label id="{{ question.linkId }}"
+      <div class="question-item">
+        <label for="{{ question.linkId }}" class="question-label"
           >{{ question.linkId }}. {{ question.text }}</label
         >
         <ng-container [ngSwitch]="question.type">
           <ng-container *ngSwitchCase="'boolean'">
             <mat-radio-group
+              id="{{ question.linkId }}"
               fxLayout="column"
               [formControlName]="question.linkId"
             >
@@ -22,14 +23,25 @@
               <mat-radio-button value="false">No</mat-radio-button>
             </mat-radio-group>
           </ng-container>
-          <ng-container *ngSwitchCase="'string'">
+          <ng-container *ngSwitchCase="'group'">
+            <div>
+              <ng-container
+                *ngFor="let subQuestion of question.item"
+                [ngTemplateOutlet]="questionContent"
+                [ngTemplateOutletContext]="{ question: subQuestion }"
+              ></ng-container>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
             <input
+              [type]="getInputType(question.type)"
               *ngIf="!question.options"
               matInput
               id="{{ question.linkId }}"
               [formControlName]="question.linkId"
             />
             <select
+              id="{{ question.linkId }}"
               *ngIf="question.options"
               matInput
               [formControlName]="question.linkId"
@@ -46,25 +58,6 @@
               </option>
             </select>
           </ng-container>
-          <ng-container *ngSwitchCase="'date'">
-            <input
-              matInput
-              type="date"
-              id="{{ question.linkId }}"
-              name="{{ question.linkId }}"
-              [formControlName]="question.linkId"
-            />
-          </ng-container>
-          <ng-container *ngSwitchCase="'group'">
-            <div>
-              <ng-container
-                *ngFor="let subQuestion of question.item"
-                [ngTemplateOutlet]="questionContent"
-                [ngTemplateOutletContext]="{ question: subQuestion }"
-              ></ng-container>
-            </div>
-          </ng-container>
-          <ng-container *ngSwitchDefault></ng-container>
         </ng-container>
         <ng-container *ngIf="question.validations">
           <ng-container *ngFor="let validation of question.validations">

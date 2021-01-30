@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 import { ApiService } from "../app/services/api-service.service";
 
 @Component({
@@ -9,9 +10,11 @@ import { ApiService } from "../app/services/api-service.service";
 export class AppComponent implements OnInit {
   title = "fhir-app-test";
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private titleService: Title) {}
 
   ngOnInit() {
+    this.titleService.setTitle(this.title);
+
     this.apiService.getPatients().subscribe((data) => {
       console.log(data);
     });
