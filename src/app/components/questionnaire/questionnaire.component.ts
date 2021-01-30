@@ -39,7 +39,6 @@ interface QuestionExt {
   styleUrls: ["./questionnaire.component.scss"],
 })
 export class QuestionnaireComponent implements OnInit {
-  name = "Angular";
   dynamicForm: FormGroup;
   questions: Question[];
   questionExts: QuestionExt[];
