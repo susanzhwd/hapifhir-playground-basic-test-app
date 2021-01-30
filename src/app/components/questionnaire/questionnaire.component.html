@@ -1,0 +1,92 @@
+<div *ngIf="dynamicForm">
+  <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" novalidate>
+    <ng-container
+      *ngFor="let question of questions"
+      [ngTemplateOutlet]="questionContent"
+      [ngTemplateOutletContext]="{ question: question }"
+    >
+    </ng-container>
+    <input type="submit" [disabled]="!dynamicForm.valid" />
+    <ng-template let-question="question" #questionContent>
+      <div>
+        <label id="{{ question.linkId }}"
+          >{{ question.linkId }}. {{ question.text }}</label
+        >
+        <ng-container [ngSwitch]="question.type">
+          <ng-container *ngSwitchCase="'boolean'">
+            <mat-radio-group
+              fxLayout="column"
+              [formControlName]="question.linkId"
+            >
+              <mat-radio-button value="true">Yes</mat-radio-button>
+              <mat-radio-button value="false">No</mat-radio-button>
+            </mat-radio-group>
+          </ng-container>
+          <ng-container *ngSwitchCase="'string'">
+            <input
+              *ngIf="!question.options"
+              matInput
+              id="{{ question.linkId }}"
+              [formControlName]="question.linkId"
+            />
+            <select
+              *ngIf="question.options"
+              matInput
+              [formControlName]="question.linkId"
+            >
+              <option
+                *ngIf="question.optionHint"
+                [value]="''"
+                disabled="disabled"
+              >
+                {{ question.optionHint }}
+              </option>
+              <option *ngFor="let option of question.options" [value]="option">
+                {{ option }}
+              </option>
+            </select>
+          </ng-container>
+          <ng-container *ngSwitchCase="'date'">
+            <input
+              matInput
+              type="date"
+              id="{{ question.linkId }}"
+              name="{{ question.linkId }}"
+              [formControlName]="question.linkId"
+            />
+          </ng-container>
+          <ng-container *ngSwitchCase="'group'">
+            <div>
+              <ng-container
+                *ngFor="let subQuestion of question.item"
+                [ngTemplateOutlet]="questionContent"
+                [ngTemplateOutletContext]="{ question: subQuestion }"
+              ></ng-container>
+            </div>
+          </ng-container>
+          <ng-container *ngSwitchDefault></ng-container>
+        </ng-container>
+        <ng-container *ngIf="question.validations">
+          <ng-container *ngFor="let validation of question.validations">
+            <span
+              class="error-message"
+              *ngIf="
+                dynamicForm.controls[question.linkId].touched &&
+                dynamicForm.controls[question.linkId].errors
+              "
+            >
+              <p
+                *ngIf="
+                  dynamicForm.controls[question.linkId].errors[validation.name]
+                "
+              >
+                {{ validation.message }}
+              </p>
+            </span>
+          </ng-container>
+        </ng-container>
+      </div>
+    </ng-template>
+  </form>
+  <pre *ngIf="response">Questionnaire Response: <br/>{{ response | json }}</pre>
+</div>

@@ -1,0 +1,79 @@
+{
+  "item": [
+    {
+      "linkId": "1",
+      "text": "Do you have allergies?",
+      "validations": [
+        {
+          "name": "required",
+          "message": "Your answer is required"
+        }
+      ]
+    },
+    {
+      "linkId": "2.1",
+      "text": "What is your gender?",
+      "validations": [
+        {
+          "name": "required",
+          "message": "Please select your gender"
+        }
+      ],
+      "options": ["Female", "Male"]
+    },
+    {
+      "linkId": "2.2",
+      "text": "What is your date of birth?",
+      "validations": [
+        {
+          "name": "required",
+          "message": "Please select your date of birht"
+        }
+      ]
+    },
+    {
+      "linkId": "2.3",
+      "text": "What is your country of birth?",
+      "validations": [
+        {
+          "name": "required",
+          "message": "Please select your country of birth"
+        }
+      ],
+      "options": ["Canada", "US"],
+      "optionHint": "Select Country"
+    },
+    {
+      "linkId": "2.4",
+      "text": "What is your marital status?",
+      "validations": [
+        {
+          "name": "required",
+          "message": "Please select your marital status"
+        }
+      ],
+      "options": ["Married", "Single"],
+      "optionHint": "Select Matrital Status"
+    },
+    {
+      "linkId": "3.1",
+      "text": "Do you smoke?",
+      "validations": [
+        {
+          "name": "required",
+          "message": "Your answer is required"
+        }
+      ]
+    },
+    {
+      "linkId": "3.2",
+      "text": "Do you drink alchohol?",
+      "validations": [
+        {
+          "name": "required",
+          "message": "Your answer is required"
+        }
+      ]
+    }
+  ]
+}
