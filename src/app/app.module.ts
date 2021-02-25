@@ -12,16 +12,21 @@ import { MatRadioModule } from "@angular/material/radio";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { MatSelectModule } from "@angular/material/select";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { QuestionComponent } from './components/question/question.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatCommonModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import { QuestionaireResponseComponent } from './components/questionaire-response/questionaire-response.component';
+import { QuestionComponent } from "./components/question/question.component";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { MatCommonModule } from "@angular/material/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { QuestionnaireResponseComponent } from "./components/questionnaire-response/questionnaire-response.component";
 
 @NgModule({
-  declarations: [AppComponent, QuestionnaireComponent, QuestionComponent, QuestionaireResponseComponent],
+  declarations: [
+    AppComponent,
+    QuestionnaireComponent,
+    QuestionComponent,
+    QuestionnaireResponseComponent,
+  ],
   imports: [
     CommonModule,
     BrowserModule,
@@ -38,7 +43,7 @@ import { QuestionaireResponseComponent } from './components/questionaire-respons
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ],
   providers: [ApiService],
   bootstrap: [AppComponent],

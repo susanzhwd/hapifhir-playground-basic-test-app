@@ -18,21 +18,29 @@ import { QuestionnaireComponent } from "./questionnaire.component";
 import questionnaire from "../../../assets/questionnaire.json";
 import questionnaire_extension from "../../../assets/questionnaire-extension.json";
 import { ApiService } from "src/app/services/api-service.service";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+import { MatCommonModule } from "@angular/material/core";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { QuestionComponent } from "../question/question.component";
+import { QuestionnaireResponseComponent } from "../questionnaire-response/questionnaire-response.component";
 
 const jsonFiles = {
   questionnaire: questionnaire,
   questionnaire_extension: questionnaire_extension,
 };
+
 class MockAppService {
   getQuestions(): Observable<{
-    questionnaire: {};
-    questionnaire_extension: {};
+    questionnaire: any;
+    questionnaire_extension: any;
   }> {
     return of(jsonFiles);
   }
 }
 
-fdescribe("QuestionnaireComponent", () => {
+describe("QuestionnaireComponent", () => {
   let component: QuestionnaireComponent;
   let fixture: ComponentFixture<QuestionnaireComponent>;
   let el: DebugElement;
@@ -47,9 +55,19 @@ fdescribe("QuestionnaireComponent", () => {
         ReactiveFormsModule,
         BrowserAnimationsModule,
         HttpClientModule,
+        MatCommonModule,
         MatRadioModule,
+        MatSelectModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatCheckboxModule,
       ],
-      declarations: [QuestionnaireComponent],
+      declarations: [
+        QuestionnaireComponent,
+        QuestionComponent,
+        QuestionnaireResponseComponent,
+      ],
     })
       .overrideComponent(QuestionnaireComponent, {
         set: {
@@ -86,14 +104,14 @@ fdescribe("QuestionnaireComponent", () => {
   it("should display the 9 Question Item", () => {
     component.ngOnInit();
     const labels = el.queryAll(By.css(".question-item"));
-    expect(labels.length).toEqual(9);
+    expect(labels.length).toEqual(7);
   });
 
   it("should display the first Question control as a radio group", () => {
     component.ngOnInit();
     const first = el.queryAll(By.css(".question-item"))[0];
     expect(first).toBeTruthy();
-    const radioGroup = first.query(By.css(".mat-radio-group"));
+    const radioGroup = first.query(By.css(".mat-checkbox"));
     expect(radioGroup).toBeTruthy();
   });
 });
