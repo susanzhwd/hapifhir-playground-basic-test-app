@@ -18,9 +18,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCommonModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { QuestionaireResponseComponent } from './components/questionaire-response/questionaire-response.component';
 
 @NgModule({
-  declarations: [AppComponent, QuestionnaireComponent, QuestionComponent],
+  declarations: [AppComponent, QuestionnaireComponent, QuestionComponent, QuestionaireResponseComponent],
   imports: [
     CommonModule,
     BrowserModule,

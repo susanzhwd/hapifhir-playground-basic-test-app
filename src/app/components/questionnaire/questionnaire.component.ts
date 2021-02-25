@@ -69,48 +69,13 @@ export class QuestionnaireComponent implements OnInit {
   onSubmit() {
     console.log(this.dynamicForm.value);
     this.response = {
-      resourceType: "QuestionnaireResponse",
-      // from Resource: id, meta, implicitRules, and language
-      // from DomainResource: text, contained, extension, and modifierExtension
-      identifier: "Identifier", // Unique id for this set of answers
-      basedOn: "[{ Reference(CarePlan|ServiceRequest) }]", // Request fulfilled by this QuestionnaireResponse
-      partOf: "[{ Reference(Observation|Procedure) }]", // Part of this action
-      questionnaire: "{ canonical(Questionnaire) }", // Form being answered
-      status: "completed", // R!  in-progress | completed | amended | entered-in-error | stopped
-      subject: "Patient", // The subject of the questions
-      encounter: "{ Reference(Encounter) }", // Encounter created as part of
-      authored: new Date().toDateString(), // Date the answers were gathered
-      author:
-        "{ Reference(Device|Practitioner|PractitionerRole|Patient|RelatedPerson|Organization) }", // Person who received and recorded the answers
-      source:
-        "{ Reference(Patient|Practitioner|PractitionerRole|RelatedPerson) }", // The person who answered the questions
+      resourceType: this.questionnaire.resourceType,
+      date: this.questionnaire.date,
+      status: this.questionnaire.status, 
       item: this.generateResponseItem(this.questions),
-      // "item" : [{ // Groups and questions
-      //   "linkId" : "<string>", // R!  Pointer to specific item from Questionnaire
-      //   "definition" : "<uri>", // ElementDefinition - details for the item
-      //   "text" : "<string>", // Name for group or question text
-      //   "answer" : [{ // The response(s) to the question
-      //     // value[x]: Single-valued answer to the question. One of these 12:
-      //     "valueBoolean" : <boolean>,
-      //     "valueDecimal" : <decimal>,
-      //     "valueInteger" : <integer>,
-      //     "valueDate" : "<date>",
-      //     "valueDateTime" : "<dateTime>",
-      //     "valueTime" : "<time>",
-      //     "valueString" : "<string>",
-      //     "valueUri" : "<uri>",
-      //     "valueAttachment" : { Attachment },
-      //     "valueCoding" : { Coding },
-      //     "valueQuantity" : { Quantity },
-      //     "valueReference" : { Reference(Any) },
-      //     "item" : [{ Content as for QuestionnaireResponse.item }] // Nested groups and questions
-      //   }],
-      //   "item" : [{ Content as for QuestionnaireResponse.item }] // Nested questionnaire response items
-      // }]
     };
   }
 
-  
   private generateResponseItem(questionItems: (Question & QuestionExt)[]) {
     const items = [];
     questionItems.forEach((q) => {

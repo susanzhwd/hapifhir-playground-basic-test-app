@@ -37,7 +37,6 @@ export class QuestionComponent implements OnInit {
   }
 
   getErrorMessage() {
-    console.log(this.question.validations)
     for (const v of this.question.validations) {
       if (this.control.hasError(v.validator)) {
         return v.message;

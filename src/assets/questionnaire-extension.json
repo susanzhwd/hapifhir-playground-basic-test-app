@@ -19,7 +19,7 @@
           "message": "Please select your gender"
         }
       ],
-      "options": ["Female", "Male"],
+      "options": ["Male", "Female"],
       "optionHint": "Select Value"
     },
     {
@@ -41,7 +41,7 @@
           "message": "Please select your country of birth"
         }
       ],
-      "options": ["Canada", "US"],
+      "options": ["US", "UK"],
       "optionHint": "Select Value"
     },
     {
@@ -53,7 +53,7 @@
           "message": "Please select your marital status"
         }
       ],
-      "options": ["Married", "Single"],
+      "options": ["Single", "Married", "Divorced"],
       "optionHint": "Select Value"
     },
     {

@@ -39,8 +39,9 @@
         </ng-template>
       </ng-template>
     </form>
-    <!-- <pre
-      *ngIf="response"
-    >Questionnaire Response: <br/>{{ response | json }}</pre> -->
   </div>
+  <app-questionaire-response
+    *ngIf="response"
+    [response]="response"
+  ></app-questionaire-response>
 </div>

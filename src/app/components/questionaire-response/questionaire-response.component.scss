@@ -7,10 +7,9 @@ div p {
   margin: 1em 1.5em;
   padding-top: 2em;
 }
-
 .question-group {
   background-color: #85e0e0;
-  margin-top: 1rem;
+  margin-top: 2rem;
   padding: 0.3rem 1rem;
   font-size: 1.2rem;
 }
@@ -49,4 +48,12 @@ button {
 
 .questions {
   margin-top: 2rem;
+}
+
+.question-answer {
+  text-decoration: underline;
+  text-decoration-color: #85adad;
+  padding-bottom: 1em;
+  margin-left: 2em;
+  color: #85e0e0;
 }

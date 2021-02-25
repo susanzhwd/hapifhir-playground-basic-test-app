@@ -1,0 +1,40 @@
+<div *ngIf="response">
+  <hr />
+  <div>
+    <p>Resource Type: {{ response.resourceType }}</p>
+    <p>Date: {{ response.date }}</p>
+    <p>Status: {{ response.status }}</p>
+  </div>
+
+  <div class="question-answers">
+    <!-- novalidate directive/attribute is used to disable browser's native form validation -->
+    <!-- group element in a template, itself doesn't be rendered in the DOM -->
+    <ng-container
+      *ngFor="let question of response.item"
+      [ngTemplateOutlet]="questionContent"
+      [ngTemplateOutletContext]="{ question: question }"
+    >
+    </ng-container>
+    <!-- ng-template is used to render HTML in a template, it only be rendered in other place with structrue directive -->
+    <ng-template let-question="question" #questionContent>
+      <div *ngIf="question.item; else questionItem">
+        <h1 class="question-group">
+          {{ question.text }}
+        </h1>
+        <ng-container
+          *ngFor="let subQuestion of question.item"
+          [ngTemplateOutlet]="questionContent"
+          [ngTemplateOutletContext]="{ question: subQuestion }"
+        ></ng-container>
+      </div>
+      <ng-template #questionItem>
+        <div>
+          <p>
+            {{ question.text }}
+            <span class="question-answer">{{ getAnswer(question) }}</span>
+          </p>
+        </div>
+      </ng-template>
+    </ng-template>
+  </div>
+</div>

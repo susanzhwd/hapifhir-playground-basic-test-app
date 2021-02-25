@@ -48,7 +48,7 @@
           name="{{ question.linkId }}"
           [formControl]="control"
         >
-          <option *ngIf="question.optionHint" [value]="''" disabled="disabled">
+          <option *ngIf="question.optionHint" value="">
             {{ question.optionHint }}
           </option>
           <option *ngFor="let option of question.options" [value]="option">
