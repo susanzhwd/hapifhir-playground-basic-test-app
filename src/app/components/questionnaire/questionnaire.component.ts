@@ -39,6 +39,7 @@ export class QuestionnaireComponent implements OnInit {
   questionExts: QuestionExt[];
   questionnaire: any;
   response: {};
+  controls = {};
 
   constructor(private apiService: ApiService) {
     this.apiService
@@ -52,15 +53,11 @@ export class QuestionnaireComponent implements OnInit {
           this.setQuestionExt(q);
         });
 
-        const controls = {};
-        this.questionExts.forEach((res) => {
-          const validationsArray = [];
-          res.validations.forEach((val) => {
-            validationsArray.push(Validators[val.validator]);
-          });
-          controls[res.linkId] = new FormControl("", validationsArray);
+        this.questions.forEach((q) => {
+          this.createControls(q);
         });
-        this.dynamicForm = new FormGroup(controls);
+
+        this.dynamicForm = new FormGroup(this.controls);
       });
   }
 
@@ -136,6 +133,22 @@ export class QuestionnaireComponent implements OnInit {
         question.options = qext.options;
         question.optionHint = qext.optionHint;
       }
+    }
+  }
+
+  private createControls(question: Question & QuestionExt) {
+    if (question.item) {
+      question.item.forEach((iq) => {
+        this.createControls(iq);
+      });
+    } else {
+      const validationsArray = [];
+      if (question.validations) {
+        question.validations.forEach((val) => {
+          validationsArray.push(Validators[val.validator]);
+        });
+      }
+      this.controls[question.linkId] = new FormControl("", validationsArray);
     }
   }
 }

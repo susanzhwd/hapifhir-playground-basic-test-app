@@ -3,9 +3,7 @@
   "id": "f201",
   "url": "http://hl7.org/fhir/Questionnaire/f201",
   "status": "active",
-  "subjectType": [
-    "Patient"
-  ],
+  "subjectType": ["Patient"],
   "date": "2010",
   "item": [
     {
@@ -52,6 +50,23 @@
         },
         {
           "linkId": "3.2",
+          "text": "Do you drink alchohol?",
+          "type": "boolean"
+        }
+      ]
+    },
+    {
+      "linkId": "4",
+      "text": "Intoxications",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "4.1",
+          "text": "Do you smoke?",
+          "type": "boolean"
+        },
+        {
+          "linkId": "4.2",
           "text": "Do you drink alchohol?",
           "type": "boolean"
         }
