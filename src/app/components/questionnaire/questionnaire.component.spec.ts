@@ -31,8 +31,8 @@ const jsonFiles = {
   questionnaire_extension: questionnaire_extension,
 };
 
-class MockAppService {
-  getQuestions(): Observable<{
+export class MockAppService extends ApiService {
+  getQuestionnaire(): Observable<{
     questionnaire: any;
     questionnaire_extension: any;
   }> {

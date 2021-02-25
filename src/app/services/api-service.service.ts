@@ -7,7 +7,8 @@ import { forkJoin, Observable } from "rxjs";
   providedIn: "root",
 })
 export class ApiService {
-  private _questionnaire_URL = "https://raw.githubusercontent.com/hapifhir/playground-basic-test-app/master/src/assets/questionnaire.json";
+  private _questionnaire_URL =
+    "https://raw.githubusercontent.com/hapifhir/playground-basic-test-app/master/src/assets/questionnaire.json";
   private _questionnaire_extension_URL = "assets/questionnaire-extension.json";
 
   constructor(private httpClient: HttpClient) {}
@@ -18,7 +19,7 @@ export class ApiService {
     });
   }
 
-  getQuestions(): Observable<{
+  getQuestionnaire(): Observable<{
     questionnaire: {};
     questionnaire_extension: {};
   }> {

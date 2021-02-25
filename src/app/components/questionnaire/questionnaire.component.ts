@@ -23,7 +23,7 @@ export interface Question {
 export interface QuestionExt {
   linkId: string;
   text?: string;
-  validations: Array<{  validator: string; message: string }>;
+  validations: Array<{ validator: string; message: string }>;
   options: string[];
   optionHint?: string;
 }
@@ -42,7 +42,7 @@ export class QuestionnaireComponent implements OnInit {
 
   constructor(private apiService: ApiService) {
     this.apiService
-      .getQuestions()
+      .getQuestionnaire()
       .subscribe(({ questionnaire, questionnaire_extension }) => {
         this.questionnaire = questionnaire;
         this.questions = (questionnaire as any).item;
@@ -71,7 +71,7 @@ export class QuestionnaireComponent implements OnInit {
     this.response = {
       resourceType: this.questionnaire.resourceType,
       date: this.questionnaire.date,
-      status: this.questionnaire.status, 
+      status: this.questionnaire.status,
       item: this.generateResponseItem(this.questions),
     };
   }
@@ -124,7 +124,7 @@ export class QuestionnaireComponent implements OnInit {
     return this.questionExts.find((f) => f.linkId === linkId);
   }
 
-  private setQuestionExt(question: Question &  QuestionExt) {
+  private setQuestionExt(question: Question & QuestionExt) {
     if (question.item) {
       question.item.forEach((iq) => {
         this.setQuestionExt(iq);
