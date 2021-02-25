@@ -1,10 +1,8 @@
-import { HttpClient } from "@angular/common/http";
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, Validators, FormControl } from "@angular/forms";
-import { forkJoin } from "rxjs";
 import { ApiService } from "src/app/services/api-service.service";
 
-type QuestionAnswerType =
+export type QuestionAnswerType =
   | "boolean"
   | "group"
   | "string"
@@ -15,20 +13,17 @@ type QuestionAnswerType =
   | "integer"
   | "decimal";
 
-interface Question {
+export interface Question {
   linkId: string;
   text: string;
   type: QuestionAnswerType;
-  validations?: Array<{ name: string; validator: string; message: string }>;
-  options?: string[];
-  optionHint?: string;
-  item?: Question[];
+  item?: (Question & QuestionExt)[];
 }
 
-interface QuestionExt {
+export interface QuestionExt {
   linkId: string;
   text?: string;
-  validations: Array<{ name: string; validator: string; message: string }>;
+  validations: Array<{  validator: string; message: string }>;
   options: string[];
   optionHint?: string;
 }
@@ -40,14 +35,16 @@ interface QuestionExt {
 })
 export class QuestionnaireComponent implements OnInit {
   dynamicForm: FormGroup;
-  questions: Question[];
+  questions: (Question & QuestionExt)[];
   questionExts: QuestionExt[];
+  questionnaire: any;
   response: {};
 
   constructor(private apiService: ApiService) {
     this.apiService
       .getQuestions()
       .subscribe(({ questionnaire, questionnaire_extension }) => {
+        this.questionnaire = questionnaire;
         this.questions = (questionnaire as any).item;
         this.questionExts = (questionnaire_extension as any).item;
 
@@ -59,7 +56,7 @@ export class QuestionnaireComponent implements OnInit {
         this.questionExts.forEach((res) => {
           const validationsArray = [];
           res.validations.forEach((val) => {
-            validationsArray.push(Validators[val.name]);
+            validationsArray.push(Validators[val.validator]);
           });
           controls[res.linkId] = new FormControl("", validationsArray);
         });
@@ -113,26 +110,8 @@ export class QuestionnaireComponent implements OnInit {
     };
   }
 
-  getInputType(type: QuestionAnswerType) {
-    switch (type) {
-      case "date":
-        return "date";
-      case "dateTime":
-        return "datetime - local";
-      case "time":
-        return "time";
-      case "uri":
-        return "url";
-      case "integer":
-        return "number";
-      case "date":
-        return "date";
-      default:
-        "text";
-    }
-  }
-
-  private generateResponseItem(questionItems: Question[]) {
+  
+  private generateResponseItem(questionItems: (Question & QuestionExt)[]) {
     const items = [];
     questionItems.forEach((q) => {
       const item = {
@@ -180,7 +159,7 @@ export class QuestionnaireComponent implements OnInit {
     return this.questionExts.find((f) => f.linkId === linkId);
   }
 
-  private setQuestionExt(question: Question) {
+  private setQuestionExt(question: Question &  QuestionExt) {
     if (question.item) {
       question.item.forEach((iq) => {
         this.setQuestionExt(iq);

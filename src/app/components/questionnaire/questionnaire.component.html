@@ -1,85 +1,46 @@
-<div *ngIf="dynamicForm" class="questions">
-  <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" novalidate>
-    <ng-container
-      *ngFor="let question of questions"
-      [ngTemplateOutlet]="questionContent"
-      [ngTemplateOutletContext]="{ question: question }"
-    >
-    </ng-container>
-    <input type="submit" [disabled]="!dynamicForm.valid" />
-    <ng-template let-question="question" #questionContent>
-      <div class="question-item">
-        <label for="{{ question.linkId }}" class="question-label"
-          >{{ question.linkId }}. {{ question.text }}</label
-        >
-        <ng-container [ngSwitch]="question.type">
-          <ng-container *ngSwitchCase="'boolean'">
-            <mat-radio-group
-              id="{{ question.linkId }}"
-              fxLayout="column"
-              [formControlName]="question.linkId"
-            >
-              <mat-radio-button value="true">Yes</mat-radio-button>
-              <mat-radio-button value="false">No</mat-radio-button>
-            </mat-radio-group>
-          </ng-container>
-          <ng-container *ngSwitchCase="'group'">
-            <div>
-              <ng-container
-                *ngFor="let subQuestion of question.item"
-                [ngTemplateOutlet]="questionContent"
-                [ngTemplateOutletContext]="{ question: subQuestion }"
-              ></ng-container>
-            </div>
-          </ng-container>
-          <ng-container *ngSwitchDefault>
-            <input
-              [type]="getInputType(question.type)"
-              *ngIf="!question.options"
-              matInput
-              id="{{ question.linkId }}"
-              [formControlName]="question.linkId"
-            />
-            <select
-              id="{{ question.linkId }}"
-              *ngIf="question.options"
-              matInput
-              [formControlName]="question.linkId"
-            >
-              <option
-                *ngIf="question.optionHint"
-                [value]="''"
-                disabled="disabled"
-              >
-                {{ question.optionHint }}
-              </option>
-              <option *ngFor="let option of question.options" [value]="option">
-                {{ option }}
-              </option>
-            </select>
-          </ng-container>
-        </ng-container>
-        <ng-container *ngIf="question.validations">
-          <ng-container *ngFor="let validation of question.validations">
-            <span
-              class="error-message"
-              *ngIf="
-                dynamicForm.controls[question.linkId].touched &&
-                dynamicForm.controls[question.linkId].errors
-              "
-            >
-              <p
-                *ngIf="
-                  dynamicForm.controls[question.linkId].errors[validation.name]
-                "
-              >
-                {{ validation.message }}
-              </p>
-            </span>
-          </ng-container>
-        </ng-container>
-      </div>
-    </ng-template>
-  </form>
-  <pre *ngIf="response">Questionnaire Response: <br/>{{ response | json }}</pre>
+<!-- wait for dynamicForm property created -->
+<div *ngIf="dynamicForm" class="mat-app-background">
+  <div>
+    <p>Resource Type: {{ questionnaire.resourceType }}</p>
+    <p>Date: {{ questionnaire.date }}</p>
+    <p>Status: {{ questionnaire.status }}</p>
+  </div>
+  <div class="questions">
+    <!-- novalidate directive/attribute is used to disable browser's native form validation -->
+    <form [formGroup]="dynamicForm" (ngSubmit)="onSubmit()" novalidate>
+      <!-- group element in a template, itself doesn't be rendered in the DOM -->
+      <ng-container
+        *ngFor="let question of questions"
+        [ngTemplateOutlet]="questionContent"
+        [ngTemplateOutletContext]="{ question: question }"
+      >
+      </ng-container>
+      <!-- submit button -->
+      <button mat-raised-button color="primary" [disabled]="!dynamicForm.valid">
+        Submit
+      </button>
+      <!-- ng-template is used to render HTML in a template, it only be rendered in other place with structrue directive -->
+      <ng-template let-question="question" #questionContent>
+        <div *ngIf="question.type == 'group'; else questionItem">
+          <h1 class="question-group">
+            {{ question.text }}
+          </h1>
+          <ng-container
+            *ngFor="let subQuestion of question.item"
+            [ngTemplateOutlet]="questionContent"
+            [ngTemplateOutletContext]="{ question: subQuestion }"
+          ></ng-container>
+        </div>
+        <ng-template #questionItem>
+          <app-question
+            [question]="question"
+            [control]="dynamicForm.controls[question.linkId]"
+          ></app-question>
+        </ng-template>
+      </ng-template>
+    </form>
+    <!-- <pre
+      *ngIf="response"
+    >Questionnaire Response: <br/>{{ response | json }}</pre> -->
+  </div>
 </div>

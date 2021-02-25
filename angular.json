@@ -127,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "fhir-app-test"
+  "defaultProject": "fhir-app-test",
+  "cli": {
+    "analytics": false
+  }
 }

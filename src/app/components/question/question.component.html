@@ -1,0 +1,62 @@
+<div
+  class="question-item"
+  fxLayout="row"
+  fxLayout.xs="question.type!='boolean'? 'column': 'row'"
+  fxLayoutAlign="start"
+>
+  <label
+    for="{{ question.linkId }}"
+    class="question-label"
+    fxFlex="15rem"
+    fxFlex.xs="question.type!='boolean'? '15rem': ''"
+    >{{ question.text }}</label
+  >
+
+  <ng-container [ngSwitch]="question.type">
+    <ng-container *ngSwitchCase="'boolean'">
+      <mat-checkbox
+        id="{{ question.linkId }}"
+        name="{{ question.linkId }}"
+        [formControl]="control"
+      ></mat-checkbox>
+      <!-- <mat-radio-group
+          id="{{ question.linkId }}"
+          name="{{ question.linkId }}"
+          fxLayout="row"
+          [formControl]="control"
+        >
+          <mat-radio-button value="true">Yes</mat-radio-button>
+          <mat-radio-button value="false">No</mat-radio-button>
+        </mat-radio-group> -->
+    </ng-container>
+
+    <ng-container *ngSwitchDefault>
+      <mat-form-field appearance="outline">
+        <!-- matInput is a directive that allows native <input> and <textarea> elements to work with <mat-form-field> -->
+        <input
+          *ngIf="!question.options"
+          [type]="getInputType(question.type)"
+          matInput
+          id="{{ question.linkId }}"
+          name="{{ question.linkId }}"
+          [formControl]="control"
+        />
+        <select
+          *ngIf="question.options"
+          matNativeControl
+          id="{{ question.linkId }}"
+          name="{{ question.linkId }}"
+          [formControl]="control"
+        >
+          <option *ngIf="question.optionHint" [value]="''" disabled="disabled">
+            {{ question.optionHint }}
+          </option>
+          <option *ngFor="let option of question.options" [value]="option">
+            {{ option }}
+          </option>
+        </select>
+        <mat-error *ngIf="control.invalid">{{ getErrorMessage() }}</mat-error>
+      </mat-form-field>
+    </ng-container>
+  </ng-container>
+</div>

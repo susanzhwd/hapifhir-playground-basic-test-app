@@ -5,7 +5,7 @@
       "text": "Do you have allergies?",
       "validations": [
         {
-          "name": "required",
+          "validator": "required",
           "message": "Your answer is required"
         }
       ]
@@ -15,18 +15,19 @@
       "text": "What is your gender?",
       "validations": [
         {
-          "name": "required",
+          "validator": "required",
           "message": "Please select your gender"
         }
       ],
-      "options": ["Female", "Male"]
+      "options": ["Female", "Male"],
+      "optionHint": "Select Value"
     },
     {
       "linkId": "2.2",
       "text": "What is your date of birth?",
       "validations": [
         {
-          "name": "required",
+          "validator": "required",
           "message": "Please select your date of birht"
         }
       ]
@@ -36,31 +37,31 @@
       "text": "What is your country of birth?",
       "validations": [
         {
-          "name": "required",
+          "validator": "required",
           "message": "Please select your country of birth"
         }
       ],
       "options": ["Canada", "US"],
-      "optionHint": "Select Country"
+      "optionHint": "Select Value"
     },
     {
       "linkId": "2.4",
       "text": "What is your marital status?",
       "validations": [
         {
-          "name": "required",
+          "validator": "required",
           "message": "Please select your marital status"
         }
       ],
       "options": ["Married", "Single"],
-      "optionHint": "Select Matrital Status"
+      "optionHint": "Select Value"
     },
     {
       "linkId": "3.1",
       "text": "Do you smoke?",
       "validations": [
         {
-          "name": "required",
+          "validator": "required",
           "message": "Your answer is required"
         }
       ]
@@ -70,7 +71,7 @@
       "text": "Do you drink alchohol?",
       "validations": [
         {
-          "name": "required",
+          "validator": "required",
           "message": "Your answer is required"
         }
       ]
